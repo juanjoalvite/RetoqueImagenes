@@ -160,24 +160,36 @@ public class Imagen extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
         BufferedImage imagenBrillo = imagen;
+
         int h = imagen.getHeight();
         int l = imagen.getWidth();
-        int R, G, B;
-        Color colorAux;
-        Color color;
+        //int R, G, B;
+        //Color colorAux;
+        //Color color;
 
         for (int i = 0; i < l - 1; i++) {
             for (int j = 0; j < h - 1; j++) {
 
-                color = new Color(imagenBrillo.getRGB(i, j));
-
-                R = (int) (color.getRed() * 0.98);
-                G = (int) (color.getGreen() * 0.98);
-                B = (int) (color.getBlue() * 0.98);
+                /*color = new Color(imagenBrillo.getRGB(i, j));
 
                 colorAux = new Color(R, G, B);
 
                 imagenBrillo.setRGB(i, j, colorAux.getRGB());
+                 */
+                int p = imagenBrillo.getRGB(i, j);
+                int a = (p >> 24) & 0xff;
+                int r = (p >> 16) & 0xff;
+                int g = (p >> 8) & 0xff;
+
+                int b = p & 0xff;
+
+                r = (int) ((int) r * 0.98);
+                g = (int) ((int) g * 0.98);
+                b = (int) ((int) b * 0.98);
+
+                p = (a << 24) | (r << 16) | (g << 8) | b;
+
+                imagenBrillo.setRGB(i, j, p);
             }
         }
         jLabel2.setIcon(new ImageIcon(imagenBrillo));
@@ -188,7 +200,9 @@ public class Imagen extends javax.swing.JFrame {
         BufferedImage imagenBrillo = imagen;
         int h = imagen.getHeight();
         int l = imagen.getWidth();
-        int R, G, B;
+
+        int brillo = 67300;
+        int pixel;
         Color colorAux;
         Color color;
 
@@ -196,10 +210,20 @@ public class Imagen extends javax.swing.JFrame {
             for (int j = 0; j < h - 1; j++) {
 
                 color = new Color(imagenBrillo.getRGB(i, j));
+                int R = 0, G = 0, B = 0;
 
-                R = (int) (color.getRed() * 1.02);
-                G = (int) (color.getGreen() * 1.02);
-                B = (int) (color.getBlue() * 1.02);
+                pixel = color.getRed() + color.getGreen() + color.getBlue();
+
+                if (color.getRed() != 0) {
+                    R = color.getRed() + ((color.getRed() / pixel) * brillo);                   
+                }
+                if (color.getGreen() != 0) {
+                    G = color.getGreen() + ((color.getGreen() / pixel) * brillo);
+                }
+                if (color.getBlue() != 0) {
+                    B = color.getBlue() + ((color.getBlue() / pixel) * brillo);
+                }     
+                System.out.println("r: " + R + " g: " + G + "b: " + B);
 
                 if (R > 255) {
                     R = 255;
