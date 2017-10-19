@@ -24,7 +24,7 @@ public class Imagen extends javax.swing.JFrame {
     BufferedImage imagen;
     File fichero;
     int resultado;
-
+ 
     /**
      * Creates new form Imagen
      */
@@ -201,7 +201,7 @@ public class Imagen extends javax.swing.JFrame {
         int h = imagen.getHeight();
         int l = imagen.getWidth();
 
-        int brillo = 67300;
+        int brillo = 10;
         int pixel;
         Color colorAux;
         Color color;
@@ -215,15 +215,16 @@ public class Imagen extends javax.swing.JFrame {
                 pixel = color.getRed() + color.getGreen() + color.getBlue();
 
                 if (color.getRed() != 0) {
-                    R = color.getRed() + ((color.getRed() / pixel) * brillo);                   
+                    R = (int) ((float) color.getRed() + (((float) color.getRed() / (float) pixel) * brillo)); 
                 }
+                            
                 if (color.getGreen() != 0) {
-                    G = color.getGreen() + ((color.getGreen() / pixel) * brillo);
+                    G = (int) ((float) color.getGreen() + (((float) color.getGreen() / (float) pixel) * brillo)); 
+                    
                 }
                 if (color.getBlue() != 0) {
-                    B = color.getBlue() + ((color.getBlue() / pixel) * brillo);
-                }     
-                System.out.println("r: " + R + " g: " + G + "b: " + B);
+                    B = (int) ((float) color.getBlue() + (((float) color.getBlue() / (float) pixel) * brillo)); 
+                }                     
 
                 if (R > 255) {
                     R = 255;
